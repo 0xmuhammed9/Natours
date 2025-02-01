@@ -6,10 +6,7 @@ const toursSchema = new mongoose.Schema({
     required: [true, 'A tour must have a name'],
     unique: true,
     trim: true,
-    maxlength: [40, 'A tour name must have less or equal then 40 characters'],
-    minlength: [10, 'A tour name must have more or equal then 10 characters'],
   },
-  slug: String,
   duration: {
     type: Number,
     required: [true, 'A tour must have a duration'],
@@ -63,4 +60,23 @@ const toursSchema = new mongoose.Schema({
     default: Date.now(),
     select: false,
   },
+  imageCover: {
+    type: String,
+    required: [true, 'A tour must have a cover image'],
+  },
+  images: [String],
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
+  startDates: [Date],
+  secretTour: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const Tour = new mongoose.model('Tour', toursSchema);
+
+export default Tour;
