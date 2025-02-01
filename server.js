@@ -9,5 +9,8 @@ mongoose.connect(NATOURS_DB).then(() => {
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`We're Listening on Port:${PORT}`);
+  if (process.env.NODE_ENV === 'development')
+    console.log(`We're Listening on Port:${PORT}, Development Mode`);
+  else if (process.env.NODE_ENV === 'production')
+    console.log(`We're Listening on Port:${PORT}, Production Mode`);
 });
