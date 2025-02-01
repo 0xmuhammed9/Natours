@@ -20,7 +20,10 @@ app.use('/api/v1/users', usersRoute);
 // Handle undefined routes
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+
 });
+
+
 
 // Global error handler
 app.use(errorHandler);
