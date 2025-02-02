@@ -36,6 +36,16 @@ const castErrorDB = (err) => {
   return new AppError(message, 400);
 }
 
+const handleDuplicateFieldsDB = (err) =>{
+  const message = `Duplicate field value: ${err.keyValue.name}. Please use another value!`;
+  return new AppError(message, 400);
+}
+
+const handleValidationErrorDB = (err) =>{
+  const message =  Object.values(err.errors).map(el => el.message).join('. ');
+  return new AppError(message, 400);
+}
+
 /**
  * @param {import ('express').Request} req
  * @param {import ('express').Response} res
@@ -52,8 +62,9 @@ const errorHandler = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'production') {
     let error = Object.create(Object.getPrototypeOf(err));
     Object.assign(error, err);
-    
     if(error.name === 'CastError') error = castErrorDB(error);
+    if(error.code === 11000) error = handleDuplicateFieldsDB(error);
+    if(error.name === 'ValidationError') error = handleValidationErrorDB(error);
     
     sendErrorProd(error, res);
   }
