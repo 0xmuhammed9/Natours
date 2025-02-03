@@ -1,7 +1,7 @@
 import usersModel from '../models/users-model.js';
+import catchAsync from '../utils/catchAsync.js';
 
-const signupUser = async (req, res) => {
-  try {
+const signupUser = catchAsync(async (req, res) => {
     const newUser = await usersModel.create(req.body);
     res.status(201).json({
       status: 'success',
@@ -9,10 +9,7 @@ const signupUser = async (req, res) => {
         user: newUser,
       },
     });
-  } catch (err) {
-    next(err);
-  }
-}; 
+});
 
 
 export default signupUser;
