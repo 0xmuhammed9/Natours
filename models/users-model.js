@@ -37,6 +37,11 @@ const usersSchema = new mongoose.Schema({
   photo: {
     type: String,
   },
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'guide', 'lead-guide'],
+    default: 'user',
+  },
 });
 
 usersSchema.pre('save', async function (next) {
