@@ -17,7 +17,9 @@ const signupUser = catchAsync(async (req, res) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
+    role: req.body.role,
   });
+
   const token = getToken(newUser._id);
   res.status(201).json({
     status: 'success',
@@ -36,12 +38,18 @@ const loginUser = catchAsync(async (req, res, next) => {
   }
   // 2) Check if user exists && password is correct
   const user = await usersModel.findOne({ email }).select('+password');
-  const correctPass = await user.correctPassword(password, user.password);
-  //3) If everything is ok, send token to client
-  if (!user || !correctPass) {
+
+  if (!user) {
     return next(new AppError('Incorrect email or password', 401));
   }
-  // send token to client
+
+  const correctPass = await user.correctPassword(password, user.password);
+
+  if (!correctPass) {
+    return next(new AppError('Incorrect email or password', 401));
+  }
+
+  // 3) If everything is ok, send token to client
   const token = getToken(user._id);
   res.status(200).json({
     status: 'success',
@@ -86,4 +94,18 @@ const protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-export { signupUser, loginUser, protect };
+const isRestricted = (...roles) => {
+  return (req, res, next) => {
+    // Check if user role is included in the allowed roles
+    if (!roles.includes(req.user.role)) {
+      console.log(req.user.role);
+      console.log(roles.includes(req.user.role));
+      return next(
+        new AppError('You do not have permission to perform this action', 403)
+      );
+    }
+    next(); // This will allow the request to proceed if role is authorized
+  };
+};
+
+export { signupUser, loginUser, protect, isRestricted };
