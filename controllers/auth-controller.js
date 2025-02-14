@@ -3,6 +3,8 @@ import catchAsync from '../utils/catchAsync.js';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/appError.js';
 import { promisify } from 'util';
+import sendEmail from '../utils/email.js';
+import crypto from 'node:crypto';
 
 const getToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -98,8 +100,6 @@ const isRestricted = (...roles) => {
   return (req, res, next) => {
     // Check if user role is included in the allowed roles
     if (!roles.includes(req.user.role)) {
-      console.log(req.user.role);
-      console.log(roles.includes(req.user.role));
       return next(
         new AppError('You do not have permission to perform this action', 403)
       );
@@ -108,4 +108,130 @@ const isRestricted = (...roles) => {
   };
 };
 
-export { signupUser, loginUser, protect, isRestricted };
+/**
+ * *************************************************
+ *                Forget Password
+ * *************************************************
+ * @param {import ('express').Request} req
+ * @param {import ('express').Response} res
+ * @param {import ('express').NextFunction} next
+ */
+const forgetPassword = catchAsync(async (req, res, next) => {
+  //1) Get user based on email
+  const user = await usersModel.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new AppError('There is no user with email address', 404));
+  }
+
+  //2) Generate Reset Token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  //3) Send Email
+  try {
+    const resetURL = `${req.protocol}://${req.get(
+      'host'
+    )}/api/v1/users/reset-password/${resetToken}`;
+
+    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email.`;
+
+    const html = `
+      <p>Forgot your password?</p>
+      <p>Submit a PATCH request with your new password and passwordConfirm to: <a href="${resetURL}">${resetURL}</a></p>
+      <p>If you didn't forget your password, please ignore this email.</p>
+    `;
+
+    await sendEmail({
+      email: user.email,
+      subject: 'Your Password Reset Token (valid for 10 minutes)',
+      message,
+      html,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Token sent to email',
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetTokenExpired = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new AppError(
+        'There was an error sending the email. Try again later!',
+        500
+      )
+    );
+  }
+});
+
+/**
+ * *************************************************
+ *                Reset Password
+ * *************************************************
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+const resetPassword = catchAsync(async (req, res, next) => {
+  //1) Get User Based on Token
+  const hashToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await usersModel.findOne({
+    passwordResetToken: hashToken,
+    passwordResetTokenExpired: { $gt: Date.now() },
+  });
+  //2) If Token has not expired, and there is user, set the new password
+  if (!user) return next(new AppError('Token is Invalid or has Expired', 400));
+  user.password = req.body.password; // Update Password
+  user.passwordConfirm = req.body.passwordConfirm; // Update Confirmed Password
+  user.passwordResetToken = undefined;
+  user.passwordResetTokenExpired = undefined;
+  await user.save();
+  //3) Log the user in, send JWT
+  const token = getToken(user._id);
+  res.status(200).json({
+    status: 'success',
+    token,
+  });
+});
+
+const updatePassword = catchAsync(async (req, res, next) => {
+  //1) Get user from colection
+  console.log(req.user.id);
+  console.log(req.user._id);
+  const user = await usersModel.findById(req.user.id).select('+password');
+  const correctPass = await user.correctPassword(req.body.password,user.password);
+  //2) Check if POSTed Current Password is correct
+  if (!correctPass)
+    return next(
+      new AppError(
+        'Password is Incorrect, Please enter the Correct Password',
+        400
+      )
+    );
+  //3) if So, Update the Password
+  user.password = req.body.newPassword;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+  //4) Log User in, Send JWT
+  const token = getToken(user._id);
+  res.status(200).json({
+    status: 'success',
+    token,
+  });
+});
+
+export {
+  signupUser,
+  loginUser,
+  protect,
+  isRestricted,
+  forgetPassword,
+  resetPassword,
+  updatePassword,
+};
