@@ -50,11 +50,11 @@ const getTour = catchAsync(async (req, res, next) => {
  * @param {import ('express').NextFunction} next
  */
 const addTour = catchAsync(async (req, res, next) => {
-  const CreatedCar = await Tour.create(req.body);
+  const createdTour = await Tour.create(req.body);
   res.status(200).json({
     status: 'Success',
     data: {
-      CreatedCar,
+      createdTour,
     },
   });
 });
