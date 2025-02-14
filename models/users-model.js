@@ -1,7 +1,13 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
+import crypto from 'node:crypto';
 
+/**
+ * *********************************************************************************************************************************************************
+ *                                                                Model Schema
+ * *********************************************************************************************************************************************************
+ */
 const usersSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -42,30 +48,60 @@ const usersSchema = new mongoose.Schema({
     enum: ['user', 'admin', 'guide', 'lead-guide'],
     default: 'user',
   },
+  passwordResetToken: String,
+  passwordResetTokenExpired: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
+/**
+ * *********************************************************************************************************************************************************
+ *                                                                Model Middleware
+ * *********************************************************************************************************************************************************
+ */
 usersSchema.pre('save', async function (next) {
   // Only run this function if password was modified
   if (!this.isModified('password')) return next();
-
   // Hash the password with cost of 10
   this.password = await bcrypt.hash(this.password, 10);
-
   // Set passwordChangedAt if password is modified (not on new document)
-  if (this.isModified('password') && !this.isNew) {
-    this.passwordChangedAt = Date.now() - 1000;
-  }
-
+  if (!this.isModified('password') || this.isNew) return next();
+  this.passwordChangedAt = Date.now() - 1000;
   // Delete passwordConfirm field
   this.passwordConfirm = undefined;
   next();
 });
 
+usersSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
+/**
+ * *********************************************************************************************************************************************************
+ *                                                                Model Methods
+ * *********************************************************************************************************************************************************
+ */
 usersSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+usersSchema.methods.createPasswordResetToken = function () {
+  const userToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(userToken)
+    .digest('hex');
+
+  this.passwordResetTokenExpired = Date.now() + 10 * 60 * 1000;
+
+  return userToken;
 };
 
 usersSchema.methods.changePasswordAfter = function (JWTTimestamp) {
