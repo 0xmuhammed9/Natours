@@ -5,10 +5,33 @@ import AppError from '../utils/appError.js';
 import { promisify } from 'util';
 import sendEmail from '../utils/email.js';
 import crypto from 'node:crypto';
+import exp from 'node:constants';
 
 const getToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
+
+const createSendToken = (user, statusCode, res) => {
+  const token = getToken(user._id);
+  const cookiesOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'production') cookiesOptions.secure = true;
+  res.cookie('jwt', token, cookiesOptions);
+  
+  user.password = undefined;
+  user.passwordConfirm = undefined;
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user: user,
+    },
   });
 };
 
@@ -21,15 +44,7 @@ const signupUser = catchAsync(async (req, res) => {
     passwordChangedAt: req.body.passwordChangedAt,
     role: req.body.role,
   });
-
-  const token = getToken(newUser._id);
-  res.status(201).json({
-    status: 'success',
-    token,
-    data: {
-      user: newUser,
-    },
-  });
+  createSendToken(newUser, 201, res);
 });
 
 const loginUser = catchAsync(async (req, res, next) => {
@@ -52,11 +67,7 @@ const loginUser = catchAsync(async (req, res, next) => {
   }
 
   // 3) If everything is ok, send token to client
-  const token = getToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(user, 200, res);
 });
 
 const protect = catchAsync(async (req, res, next) => {
@@ -193,19 +204,18 @@ const resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetTokenExpired = undefined;
   await user.save();
   //3) Log the user in, send JWT
-  const token = getToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(user, 200, res);
 });
 
 const updatePassword = catchAsync(async (req, res, next) => {
-  //1) Get user from colection
+  //1) Get user from collection
   console.log(req.user.id);
   console.log(req.user._id);
   const user = await usersModel.findById(req.user.id).select('+password');
-  const correctPass = await user.correctPassword(req.body.password,user.password);
+  const correctPass = await user.correctPassword(
+    req.body.password,
+    user.password
+  );
   //2) Check if POSTed Current Password is correct
   if (!correctPass)
     return next(
@@ -219,11 +229,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
   //4) Log User in, Send JWT
-  const token = getToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(user, 200, res);
 });
 
 export {
