@@ -5,7 +5,6 @@ import AppError from '../utils/appError.js';
 import { promisify } from 'util';
 import sendEmail from '../utils/email.js';
 import crypto from 'node:crypto';
-import exp from 'node:constants';
 
 const getToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
