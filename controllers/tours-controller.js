@@ -23,16 +23,13 @@ const getAllTour = catchAsync(async (req, res, next) => {
   });
 });
 
-/**
- * @param {import ('express').Request} req
- * @param {import ('express').Response} res
- * @param {import ('express').NextFunction} next
- */
 const getTour = catchAsync(async (req, res, next) => {
   const fields = req.query.fields
     ? req.query.fields.split(',').join(' ')
     : '-__v';
-  const findTour = await Tour.findById(req.params.id).select(fields);
+  const findTour = await Tour.findById(req.params.id)
+    .select(fields)
+    .populate('reviews');
   if (!findTour) {
     return next(new AppError('No tour found with that ID', 404));
   }
@@ -44,11 +41,6 @@ const getTour = catchAsync(async (req, res, next) => {
   });
 });
 
-/**
- * @param {import ('express').Request} req
- * @param {import ('express').Response} res
- * @param {import ('express').NextFunction} next
- */
 const addTour = catchAsync(async (req, res, next) => {
   const createdTour = await Tour.create(req.body);
   res.status(200).json({
