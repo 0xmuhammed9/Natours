@@ -5,13 +5,14 @@ import {
   createReview,
   deleteReview,
 } from '../controllers/review-controller.js';
+import setTourUserIds from '../middleware/setTourUserIds.js';
 
 const reviewRoute = express.Router({
   mergeParams: true,
 });
 reviewRoute.use(protect);
 
-reviewRoute.route('/').get(getAllReviews).post(createReview);
+reviewRoute.route('/').get(getAllReviews).post(setTourUserIds, createReview);
 reviewRoute.route('/:id').delete(deleteReview);
 
 export default reviewRoute;
