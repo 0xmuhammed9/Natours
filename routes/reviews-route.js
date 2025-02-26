@@ -5,8 +5,11 @@ import {
   createReview,
 } from '../controllers/review-controller.js';
 
-const reviewRoute = express.Router();
+const reviewRoute = express.Router({
+  mergeParams: true,
+});
+reviewRoute.use(protect);
 
-reviewRoute.route('/').get(protect,getAllReviews).post(protect,createReview);
+reviewRoute.route('/').get(getAllReviews).post(createReview);
 
 export default reviewRoute;
