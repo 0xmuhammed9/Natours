@@ -2,6 +2,7 @@ import Tour from '../models/tours-model.js';
 import APIQuery from '../utils/apiFeatures.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
+import { deleteOne } from './handlerFactory.js';
 
 /**
  * @param {import ('express').Request} req
@@ -74,20 +75,8 @@ const updateTour = catchAsync(async (req, res, next) => {
   });
 });
 
-/**
- * @param {import ('express').Request} req
- * @param {import ('express').Response} res
- * @param {import ('express').NextFunction} next
- */
-const deleteTour = catchAsync(async (req, res, next) => {
-  const deletedTour = await Tour.findByIdAndDelete(req.params.id);
-  if (!deletedTour) {
-    return next(new AppError('No tour found with that ID', 404));
-  }
-  res.status(200).json({
-    status: 'Success',
-    data: null,
-  });
-});
+
+const deleteTour = deleteOne(Tour);
+ 
 
 export { getAllTour, getTour, updateTour, deleteTour, addTour };
