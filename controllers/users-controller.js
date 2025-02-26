@@ -1,7 +1,7 @@
 import User from '../models/users-model.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
-import { deleteOne } from './handlerFactory.js';
+import { deleteOne, updateOne } from './handlerFactory.js';
 
 /**
  * ********************************************************************************************************************
@@ -54,6 +54,7 @@ const deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+const updateUser = updateOne(User);
 const deleteUser = deleteOne(User);
 
-export { updateMe, deleteMe, deleteUser };
+export { updateMe, deleteMe, deleteUser, updateUser };
