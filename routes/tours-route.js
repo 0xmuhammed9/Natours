@@ -17,7 +17,7 @@ toursRoute.route('/').get(protect, getAllTour).post(addTour);
 toursRoute
   .route('/:id')
   .get(getTour)
-  .delete(protect, isRestricted(['admin ', 'lead-guide']), deleteTour)
+  .delete(protect, isRestricted(['admin', 'lead-guide']), deleteTour)
   .patch(updateTour);
 
 export default toursRoute;
