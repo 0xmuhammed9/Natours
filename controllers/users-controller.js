@@ -1,6 +1,7 @@
-import userModel from '../models/users-model.js';
+import User from '../models/users-model.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
+import { deleteOne } from './handlerFactory.js';
 
 /**
  * ********************************************************************************************************************
@@ -20,7 +21,7 @@ const filterObj = (obj, ...allowedObj) => {
  *                                                  Controller Functions
  * ********************************************************************************************************************
  */
-export const updateMe = catchAsync(async (req, res, next) => {
+const updateMe = catchAsync(async (req, res, next) => {
   //1) Create error if user POSTs password Data.
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -33,14 +34,10 @@ export const updateMe = catchAsync(async (req, res, next) => {
   //2) Filter unwanted fields that are not allowed to be updated
   const filteredBody = filterObj(req.body, 'name', 'email');
   //3) Update user document
-  const updatedUser = await userModel.findByIdAndUpdate(
-    req.user.id,
-    filteredBody,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+    new: true,
+    runValidators: true,
+  });
   res.status(200).json({
     status: 'success',
     data: {
@@ -49,10 +46,14 @@ export const updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
-export const deleteMe = catchAsync(async (req, res, next) => {
-  await userModel.findByIdAndUpdate(req.user.id, { active: false });
+const deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
   res.status(204).json({
     status: 'success',
     data: null,
   });
 });
+
+const deleteUser = deleteOne(User);
+
+export { updateMe, deleteMe, deleteUser };
