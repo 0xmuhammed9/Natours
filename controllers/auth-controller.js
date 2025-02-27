@@ -5,6 +5,7 @@ import AppError from '../utils/appError.js';
 import { promisify } from 'util';
 import sendEmail from '../utils/email.js';
 import crypto from 'node:crypto';
+import sendResponse from '../utils/sendResponse.js';
 
 const getToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -121,31 +122,20 @@ const isRestricted = (roles) => {
   };
 };
 
-/**
- * *************************************************
- *                Forget Password
- * *************************************************
- * @param {import ('express').Request} req
- * @param {import ('express').Response} res
- * @param {import ('express').NextFunction} next
- */
 const forgetPassword = catchAsync(async (req, res, next) => {
   //1) Get user based on email
   const user = await usersModel.findOne({ email: req.body.email });
   if (!user) {
     return next(new AppError('There is no user with email address', 404));
   }
-
   //2) Generate Reset Token
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
-
   //3) Send Email
   try {
     const resetURL = `${req.protocol}://${req.get(
       'host'
     )}/api/v1/users/reset-password/${resetToken}`;
-
     const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email.`;
 
     const html = `
@@ -153,7 +143,6 @@ const forgetPassword = catchAsync(async (req, res, next) => {
       <p>Submit a PATCH request with your new password and passwordConfirm to: <a href="${resetURL}">${resetURL}</a></p>
       <p>If you didn't forget your password, please ignore this email.</p>
     `;
-
     await sendEmail({
       email: user.email,
       subject: 'Your Password Reset Token (valid for 10 minutes)',
@@ -179,14 +168,6 @@ const forgetPassword = catchAsync(async (req, res, next) => {
   }
 });
 
-/**
- * *************************************************
- *                Reset Password
- * *************************************************
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- */
 const resetPassword = catchAsync(async (req, res, next) => {
   //1) Get User Based on Token
   const hashToken = crypto
