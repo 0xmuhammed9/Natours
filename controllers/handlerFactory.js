@@ -1,6 +1,7 @@
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import APIQuery from '../utils/apiFeatures.js';
+import sendResponse from '../utils/sendResponse.js';
 
 const getAll = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -12,13 +13,7 @@ const getAll = (Model) =>
       .fields()
       .pagination();
     const doc = await Query.query;
-    res.status(200).json({
-      status: 'Success',
-      results: doc.length,
-      data: {
-        doc,
-      },
-    });
+    sendResponse(res, 200, doc);
   });
 
 const getOne = (Model, popOptions) =>
@@ -29,12 +24,7 @@ const getOne = (Model, popOptions) =>
     if (!doc) {
       return next(new AppError('No document found with that ID', 404));
     }
-    res.status(200).json({
-      status: 'Success',
-      data: {
-        data: doc,
-      },
-    });
+    sendResponse(res, 200, doc);
   });
 
 const deleteOne = (Model) =>
@@ -43,10 +33,7 @@ const deleteOne = (Model) =>
     if (!doc) {
       return next(new AppError('No document found with that ID', 404));
     }
-    res.status(204).json({
-      status: 'Success',
-      data: null,
-    });
+    sendResponse(res, 204, null);
   });
 
 const updateOne = (Model) =>
@@ -56,23 +43,13 @@ const updateOne = (Model) =>
       runValidators: true,
     });
     if (!doc) return next(new AppError('No document found with that ID', 404));
-    res.status(200).json({
-      status: 'Success',
-      data: {
-        data: doc,
-      },
-    });
+    sendResponse(res, 200, doc);
   });
 
 const createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
-    res.status(201).json({
-      status: 'Success',
-      data: {
-        data: doc,
-      },
-    });
+    sendResponse(res, 201, doc);
   });
 
 export { getAll, deleteOne, updateOne, createOne, getOne };
