@@ -1,7 +1,7 @@
 import User from '../models/users-model.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
-import { deleteOne, updateOne } from './handlerFactory.js';
+import { deleteOne, updateOne, getAll } from './handlerFactory.js';
 
 /**
  * ********************************************************************************************************************
@@ -13,7 +13,7 @@ const filterObj = (obj, ...allowedObj) => {
   Object.keys(obj).forEach((el) => {
     if (allowedObj.includes(el)) newObj[el] = obj[el];
   });
-  return newObj; // Move return statement outside forEach
+  return newObj;
 };
 
 /**
@@ -56,5 +56,6 @@ const deleteMe = catchAsync(async (req, res, next) => {
 
 const updateUser = updateOne(User);
 const deleteUser = deleteOne(User);
+const getAllUsers = getAll(User);
 
-export { updateMe, deleteMe, deleteUser, updateUser };
+export { updateMe, deleteMe, deleteUser, updateUser, getAllUsers };
