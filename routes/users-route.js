@@ -18,14 +18,25 @@ import {
 
 const usersRoute = express.Router();
 
+/**
+ * ******************************************************************************************************
+ *                                               User Controller Functions
+ * ******************************************************************************************************
+ */
+
 usersRoute.route('/signup').post(signupUser);
 usersRoute.route('/login').post(loginUser);
 usersRoute.route('/forget-password').post(forgetPassword);
 usersRoute.route('/reset-password/:token').patch(resetPassword);
 usersRoute.route('/update-password').patch(protect, updatePassword);
-usersRoute.route('/').get().post();
 usersRoute.route('/updateMe').patch(protect, updateMe);
 usersRoute.route('/deleteMe').delete(protect, deleteMe);
+
+/**
+ * ******************************************************************************************************
+ *                                               Admin Controller Functions
+ * ******************************************************************************************************
+ */
 usersRoute.route('/').get(protect, isRestricted(['admin']), getAllUsers);
 usersRoute
   .route('/:id')
