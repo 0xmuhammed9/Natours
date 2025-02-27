@@ -13,6 +13,7 @@ import {
   deleteMe,
   deleteUser,
   updateUser,
+  getAllUsers,
 } from '../controllers/users-controller.js';
 
 const usersRoute = express.Router();
@@ -25,6 +26,7 @@ usersRoute.route('/update-password').patch(protect, updatePassword);
 usersRoute.route('/').get().post();
 usersRoute.route('/updateMe').patch(protect, updateMe);
 usersRoute.route('/deleteMe').delete(protect, deleteMe);
+usersRoute.route('/').get(protect, isRestricted(['admin']), getAllUsers);
 usersRoute
   .route('/:id')
   .get()
