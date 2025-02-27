@@ -1,7 +1,7 @@
 import User from '../models/users-model.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
-import { deleteOne, updateOne, getAll } from './handlerFactory.js';
+import { deleteOne, updateOne, getAll, getOne } from './handlerFactory.js';
 
 /**
  * ********************************************************************************************************************
@@ -43,6 +43,11 @@ const updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
+const getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
+
 const deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
   res.status(204).json({
@@ -53,11 +58,21 @@ const deleteMe = catchAsync(async (req, res, next) => {
 
 /**
  * ******************************************************************************************************
- *                                         Admin Controller Functions 
+ *                                         Admin Controller Functions
  * ******************************************************************************************************
  */
+
+const getAllUsers = getAll(User);
+const getUser = getOne(User);
 const updateUser = updateOne(User);
 const deleteUser = deleteOne(User);
-const getAllUsers = getAll(User);
 
-export { updateMe, deleteMe, deleteUser, updateUser, getAllUsers };
+export {
+  updateMe,
+  deleteMe,
+  getMe,
+  deleteUser,
+  updateUser,
+  getAllUsers,
+  getUser,
+};
