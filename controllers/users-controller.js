@@ -18,11 +18,10 @@ const filterObj = (obj, ...allowedObj) => {
 
 /**
  * ********************************************************************************************************************
- *                                                  Controller Functions
+ *                                              User Controller Functions
  * ********************************************************************************************************************
  */
 const updateMe = catchAsync(async (req, res, next) => {
-  //1) Create error if user POSTs password Data.
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
@@ -31,9 +30,7 @@ const updateMe = catchAsync(async (req, res, next) => {
       )
     );
   }
-  //2) Filter unwanted fields that are not allowed to be updated
   const filteredBody = filterObj(req.body, 'name', 'email');
-  //3) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
@@ -54,6 +51,11 @@ const deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+/**
+ * ******************************************************************************************************
+ *                                         Admin Controller Functions 
+ * ******************************************************************************************************
+ */
 const updateUser = updateOne(User);
 const deleteUser = deleteOne(User);
 const getAllUsers = getAll(User);
