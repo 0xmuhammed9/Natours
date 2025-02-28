@@ -30,21 +30,19 @@ usersRoute.route('/signup').post(signupUser);
 usersRoute.route('/login').post(loginUser);
 usersRoute.route('/forget-password').post(forgetPassword);
 usersRoute.route('/reset-password/:token').patch(resetPassword);
-usersRoute.route('/update-password').patch(protect, updatePassword);
-usersRoute.route('/updateMe').patch(protect, updateMe);
-usersRoute.route('/deleteMe').delete(protect, deleteMe);
-usersRoute.route('/me').get(protect, getMe, getUser);
+usersRoute.use(protect); // Protect all routes after this middleware
+usersRoute.route('/update-password').patch(updatePassword);
+usersRoute.route('/updateMe').patch(updateMe);
+usersRoute.route('/deleteMe').delete(deleteMe);
+usersRoute.route('/me').get(getMe, getUser);
 
 /**
  * ******************************************************************************************************
  *                                               Admin Controller Functions
  * ******************************************************************************************************
  */
-usersRoute.route('/').get(protect, isRestricted(['admin']), getAllUsers);
-usersRoute
-  .route('/:id')
-  .get(protect, isRestricted(['admin']), getUser)
-  .delete(protect, isRestricted(['admin']), deleteUser)
-  .patch(protect, isRestricted(['admin']), updateUser);
+usersRoute.use(isRestricted(['admin'])); // Protect all routes after this middleware
+usersRoute.route('/').get(getAllUsers);
+usersRoute.route('/:id').get(getUser).delete(deleteUser).patch(updateUser);
 
 export default usersRoute;
