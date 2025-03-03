@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import slugify from 'slugify';
 
 const toursSchema = new mongoose.Schema(
   {
@@ -95,6 +96,7 @@ const toursSchema = new mongoose.Schema(
         day: Number,
       },
     ],
+    slug: String,
     guides: [
       {
         type: mongoose.Schema.ObjectId,
@@ -108,11 +110,27 @@ const toursSchema = new mongoose.Schema(
   }
 );
 
+/**
+ * ***********************************************************************************************************
+ *                                    Virtual Properties
+ * ***********************************************************************************************************
+ */
 toursSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'tour',
   localField: '_id',
 });
+
+/**
+ * ***********************************************************************************************************
+ *                                      Pre Fucntions
+ * ***********************************************************************************************************
+ */
+toursSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
 toursSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',
