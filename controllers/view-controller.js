@@ -1,8 +1,8 @@
 import Tour from '../models/tours-model.js';
-import catchAsunc from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
+import catchAsync from '../utils/catchAsync.js';
 
-const getView = catchAsunc(async (req, res, next) => {
+const getView = catchAsync(async (req, res, next) => {
   const tours = await Tour.find();
   res.status(200).render('overview', {
     title: 'All Tours Overview',
@@ -10,7 +10,7 @@ const getView = catchAsunc(async (req, res, next) => {
   });
 });
 
-const getTour = catchAsunc(async (req, res, next) => {
+const getTour = catchAsync(async (req, res, next) => {
   const { slug } = req.params;
   const tour = await Tour.findOne({ slug }).populate({
     path: 'reviews',
@@ -22,7 +22,7 @@ const getTour = catchAsunc(async (req, res, next) => {
   });
 });
 
-const login = catchAsunc(async (req, res, next) => {
+const login = catchAsync(async (req, res, next) => {
   res.status(200).render('login', {
     title: 'Log into your account',
   });
