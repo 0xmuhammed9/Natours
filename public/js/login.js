@@ -1,5 +1,5 @@
 /* eslint-disable */
-import axios from './node_modules/axios/dist/axios.js'
+import axios from 'axios';
 import { showAlert } from './alerts.js';
 
 export const login = async (email, password) => {
