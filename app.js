@@ -11,17 +11,10 @@ import helmet from 'helmet';
 import xss from 'xss-clean';
 import DataSansitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
-import path from 'node:path';
-import { cwd } from 'node:process';
-import viewRouter from './routes/view-route.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 dotenv.config();
-app.set('view engine', 'pug');
-app.set('views', path.join(path.resolve(), 'views'));
-app.use(express.static(path.join(path.resolve(), 'public')));
-// app.use(express.static(cwd() + '/public'));
-// app.use(express.static(cwd() + '/views'));
 
 /**
  * ***************************************************************************************************
@@ -37,6 +30,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 app.use(DataSansitize());
 app.use(xss());
 app.use(
@@ -59,7 +53,6 @@ app.use(morgan('dev'));
  * ***************************************************************************************************
  */
 
-app.use('/', viewRouter);
 app.use('/api/v1/tours', toursRoute);
 app.use('/api/v1/users', usersRoute);
 app.use('/api/v1/reviews', reviewsRoute);
