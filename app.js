@@ -15,7 +15,7 @@ import cookieParser from 'cookie-parser';
 import path from 'node:path';
 import { cwd } from 'node:process';
 import viewRouter from './routes/view-route.js';
-import cookieParser from 'cookie-parser';
+
 
 const app = express();
 dotenv.config();
