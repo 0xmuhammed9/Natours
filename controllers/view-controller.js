@@ -1,5 +1,6 @@
 import Tour from '../models/tours-model.js';
 import catchAsync from '../utils/catchAsync.js';
+import AppError from '../utils/appError.js';
 
 const getView = catchAsync(async (req, res, next) => {
   const tours = await Tour.find();
@@ -16,6 +17,9 @@ const getTour = catchAsync(async (req, res, next) => {
     path: 'reviews',
     fields: 'review rating user',
   });
+  if (!tour) {
+    return next(new AppError('There is no tour with that name', 404));
+  }
   res.status(200).render('tour', {
     title: 'The Forest Hiker Tour',
     tour,
@@ -36,4 +40,11 @@ const signup = catchAsync(async (req, res, next) => {
   });
 });
 
-export { getTour, getView, login, signup };
+const getAccout = catchAsync(async (req, res, next) => {
+  res.status(200).render('account', {
+    title: 'Your account',
+    user: req.user,
+  });
+});
+
+export { getTour, getView, login, signup, getAccout };
