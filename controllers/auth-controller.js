@@ -220,31 +220,33 @@ const isRestricted = (roles) => {
 };
 
 const isLoggedIn = async (req, res, next) => {
-  if (req.cookies.jwt) {
-    try {
-      // 1) verify token
+  try {
+    if (req.cookies.jwt) {
+      // 1) Verify token
       const decoded = await promisify(jwt.verify)(
         req.cookies.jwt,
         process.env.JWT_SECRET
       );
 
       // 2) Check if user still exists
-      const currentUser = await User.findById(decoded.id);
+      const currentUser = await usersModel.findById(decoded.id);
       if (!currentUser) {
         return next();
       }
 
       // 3) Check if user changed password after the token was issued
-      if (currentUser.changedPasswordAfter(decoded.iat)) {
+      if (currentUser.changePasswordAfter(decoded.iat)) {
         return next();
       }
 
       // THERE IS A LOGGED IN USER
-      res.locals.user = currentUser;
-      return next();
-    } catch (err) {
+      res.locals.user = currentUser; // This makes user available in templates
+      req.user = currentUser;        // This makes user available in req object
       return next();
     }
+  } catch (err) {
+    // If there's an error, just move to next middleware
+    // This means there's no logged in user
   }
   next();
 };
