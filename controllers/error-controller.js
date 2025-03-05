@@ -13,7 +13,7 @@ const errorHandler = (err, req, res, next) => {
   err.status = err.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
-    sendErrorDev(err, res);
+    sendErrorDev(err,req, res);
   }
   if (process.env.NODE_ENV === 'production') {
     let error = Object.create(Object.getPrototypeOf(err));
@@ -25,7 +25,7 @@ const errorHandler = (err, req, res, next) => {
     if (error.name === 'JsonWebTokenError') error = handleJWTError();
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
 
-    sendErrorProd(error, res);
+    sendErrorProd(error,req, res);
   }
 };
 
