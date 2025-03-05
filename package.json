@@ -2,7 +2,10 @@
   "name": "natours-website",
   "version": "1.0.0",
   "description": "Project from Node.js The Complete Bootcamp",
-  "main": "index.js",
+  "main": "app.js",
+  "targets": {
+    "main": false
+  },
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,6 +20,7 @@
     "axios": "^1.8.1",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "express": "^4.21.1",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.5.0",
@@ -35,8 +39,11 @@
     "@faker-js/faker": "^9.3.0",
     "@types/express": "^5.0.0",
     "@types/morgan": "^1.9.9",
+    "buffer": "^6.0.3",
     "dotenv": "^16.4.7",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "parcel": "^2.13.3",
+    "process": "^0.11.10"
   }
 }
