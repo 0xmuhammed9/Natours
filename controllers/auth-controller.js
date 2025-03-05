@@ -75,6 +75,16 @@ const loginUser = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
+const logoutUser = catchAsync(async (req, res, next) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: 'success',
+  });
+});
+
 const forgetPassword = catchAsync(async (req, res, next) => {
   const user = await usersModel.findOne({ email: req.body.email });
   if (!user) {
@@ -241,7 +251,7 @@ const isLoggedIn = async (req, res, next) => {
 
       // THERE IS A LOGGED IN USER
       res.locals.user = currentUser; // This makes user available in templates
-      req.user = currentUser;        // This makes user available in req object
+      req.user = currentUser; // This makes user available in req object
       return next();
     }
   } catch (err) {
@@ -260,4 +270,5 @@ export {
   resetPassword,
   updatePassword,
   isLoggedIn,
+  logoutUser,
 };
