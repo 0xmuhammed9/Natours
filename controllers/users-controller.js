@@ -44,6 +44,7 @@ const updateMe = catchAsync(async (req, res, next) => {
 });
 
 const getMe = (req, res, next) => {
+  if (!req.user) return next(new AppError('You are not logged in', 401));
   req.params.id = req.user.id;
   next();
 };
