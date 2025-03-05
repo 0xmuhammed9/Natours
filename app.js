@@ -15,9 +15,11 @@ import cookieParser from 'cookie-parser';
 import path from 'node:path';
 import { cwd } from 'node:process';
 import viewRouter from './routes/view-route.js';
-
+import cors from 'cors';
 
 const app = express();
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+
 dotenv.config();
 app.set('view engine', 'pug');
 app.set('views', path.join(path.resolve(), 'views'));
@@ -30,7 +32,20 @@ app.use(express.static(path.join(path.resolve(), 'public')));
  *                                   Global Middlewares
  * ***************************************************************************************************
  */
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'", 'https:', 'http:', 'data:', 'ws:'],
+        baseUri: ["'self'"],
+        fontSrc: ["'self'", 'https:', 'http:', 'data:'],
+        scriptSrc: ["'self'", 'https:', 'http:', 'blob:'],
+        styleSrc: ["'self'", "'unsafe-inline'", 'https:', 'http:'],
+        imgSrc: ["'self'", 'data:', 'blob:', 'https:', 'http:'],
+      },
+    },
+  })
+);
 app.use(
   '/api',
   rateLimit({
