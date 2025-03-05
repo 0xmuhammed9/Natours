@@ -6,10 +6,15 @@ export const login = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://localhost:3000/api/v1/users/login', 
+      url: '/api/v1/users/login',
       data: {
         email,
         password,
+      },
+      withCredentials: true,
+      credentials: 'include', // Add this to ensure cookies are sent
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
 
@@ -22,15 +27,7 @@ export const login = async (email, password) => {
   } catch (err) {
     showAlert(
       'error',
-      err.response.data.message || 'Error logging in! Please try again.'
+      err.response?.data?.message || 'Error logging in. Please try again.'
     );
   }
 };
-
-// Move this to index.js or keep it here if you want it to run immediately
-document.querySelector('.form--login')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  login(email, password);
-});
