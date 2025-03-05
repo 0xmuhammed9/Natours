@@ -1,13 +1,15 @@
 import express from 'express';
+import { isLoggedIn } from '../controllers/auth-controller.js';
 import {
   getView,
   getTour,
   login,
   signup,
 } from '../controllers/view-controller.js';
-import { isLoggedIn } from '../controllers/auth-controller.js';
 
 const viewRouter = express.Router();
+
+// Apply isLoggedIn to all routes
 viewRouter.use(isLoggedIn);
 
 viewRouter.get('/', getView);
