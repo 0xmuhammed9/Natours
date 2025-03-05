@@ -596,19 +596,25 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"f2QDv":[function(require,module,exports,__globalThis) {
-var _loginJs = require("./login.js");
+/* eslint-disable */ var _loginJs = require("./login.js");
+var _alertsJs = require("./alerts.js");
+// DOM ELEMENTS
 const loginForm = document.querySelector('.form--login');
+const logoutBtn = document.querySelector('.nav__el--logout');
+// DELEGATION
 if (loginForm) loginForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     (0, _loginJs.login)(email, password);
 });
+if (logoutBtn) logoutBtn.addEventListener('click', (0, _loginJs.logout));
 
-},{"./login.js":"7yHem"}],"7yHem":[function(require,module,exports,__globalThis) {
+},{"./login.js":"7yHem","./alerts.js":"6Mcnf"}],"7yHem":[function(require,module,exports,__globalThis) {
 /* eslint-disable */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "login", ()=>login);
+parcelHelpers.export(exports, "logout", ()=>logout);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
 var _alertsJs = require("./alerts.js");
@@ -635,6 +641,23 @@ const login = async (email, password)=>{
         }
     } catch (err) {
         (0, _alertsJs.showAlert)('error', err.response?.data?.message || 'Error logging in. Please try again.');
+    }
+};
+const logout = async ()=>{
+    try {
+        const res = await (0, _axiosDefault.default)({
+            method: 'GET',
+            url: '/api/v1/users/logout',
+            withCredentials: true
+        });
+        if (res.data.status === 'success') {
+            (0, _alertsJs.showAlert)('success', 'Logged out successfully!');
+            window.setTimeout(()=>{
+                location.assign('/');
+            }, 1500);
+        }
+    } catch (err) {
+        (0, _alertsJs.showAlert)('error', 'Error logging out! Try again.');
     }
 };
 
