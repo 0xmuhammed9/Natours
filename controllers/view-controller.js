@@ -1,4 +1,5 @@
 import Tour from '../models/tours-model.js';
+import User from '../models/users-model.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 
@@ -46,5 +47,23 @@ const getAccout = catchAsync(async (req, res, next) => {
     user: req.user,
   });
 });
+const updateUserData = catchAsync(async (req, res, next) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    {
+      name: req.body.name,
+      email: req.body.email,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
-export { getTour, getView, login, signup, getAccout };
+  res.status(200).render('account', {
+    title: 'Your account',
+    user: updatedUser,
+  });
+});
+
+export { getTour, getView, login, signup, getAccout, updateUserData };
