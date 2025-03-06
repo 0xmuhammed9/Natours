@@ -598,10 +598,11 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 },{}],"f2QDv":[function(require,module,exports,__globalThis) {
 /* eslint-disable */ var _loginJs = require("./login.js");
 var _alertsJs = require("./alerts.js");
-// DOM ELEMENTS
+var _updateSettingJs = require("./updateSetting.js");
 const loginForm = document.querySelector('.form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
-// DELEGATION
+const userDataForm = document.querySelector('.form-user-data');
+const userPasswordForm = document.querySelector('.form-user-password');
 if (loginForm) loginForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const email = document.getElementById('email').value;
@@ -609,8 +610,42 @@ if (loginForm) loginForm.addEventListener('submit', (e)=>{
     (0, _loginJs.login)(email, password);
 });
 if (logoutBtn) logoutBtn.addEventListener('click', (0, _loginJs.logout));
+if (userDataForm) userDataForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    (0, _updateSettingJs.updateSettings)({
+        name,
+        email
+    }, 'data');
+});
+if (userDataForm) userDataForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    (0, _updateSettingJs.updateSettings)({
+        name,
+        email
+    }, 'data');
+});
+if (userPasswordForm) userPasswordForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    document.querySelector('.btn--save-password').textContent = 'Updating...';
+    const password = document.getElementById('password-current').value;
+    const newPassword = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    await (0, _updateSettingJs.updateSettings)({
+        password,
+        newPassword,
+        passwordConfirm
+    }, 'password');
+    document.querySelector('.btn--save-password').textContent = 'Save password';
+    document.getElementById('password-current').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('password-confirm').value = '';
+});
 
-},{"./login.js":"7yHem","./alerts.js":"6Mcnf"}],"7yHem":[function(require,module,exports,__globalThis) {
+},{"./login.js":"7yHem","./alerts.js":"6Mcnf","./updateSetting.js":"6GcZk"}],"7yHem":[function(require,module,exports,__globalThis) {
 /* eslint-disable */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "login", ()=>login);
@@ -5612,6 +5647,27 @@ const showAlert = (type, msg)=>{
     window.setTimeout(hideAlert, 5000);
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["2dtHH","f2QDv"], "f2QDv", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6GcZk":[function(require,module,exports,__globalThis) {
+/* eslint-disable */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "updateSettings", ()=>updateSettings);
+var _axios = require("axios");
+var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _alertsJs = require("./alerts.js");
+const updateSettings = async (data, type)=>{
+    try {
+        const url = type === 'password' ? '/api/v1/users/update-password' : '/api/v1/users/updateMe';
+        const res = await (0, _axiosDefault.default)({
+            method: 'PATCH',
+            url,
+            data
+        });
+        if (res.data.status === 'success') (0, _alertsJs.showAlert)('success', `${type.toUpperCase()} updated successfully!`);
+    } catch (err) {
+        (0, _alertsJs.showAlert)('error', err.response.data.message);
+    }
+};
+
+},{"axios":"jo6P5","./alerts.js":"6Mcnf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["2dtHH","f2QDv"], "f2QDv", "parcelRequire94c2")
 
 //# sourceMappingURL=index.js.map
