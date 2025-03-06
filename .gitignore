@@ -2,4 +2,4 @@
 .env
 .vscode
 /data/*
-.parcel-cache
+.parcel-cache/*
