@@ -24,6 +24,6 @@ viewRouter.get('/tour/:slug', getTour);
 viewRouter.get('/login', login);
 viewRouter.get('/signup', signup);
 viewRouter.get('/me', getAccout);
-viewRouter.post('update-data',updateUserData);
+viewRouter.post('/update-data',updateUserData);
 
 export default viewRouter;
