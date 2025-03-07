@@ -2,12 +2,14 @@ import User from '../models/users-model.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
 import { deleteOne, updateOne, getAll, getOne } from './handlerFactory.js';
+import sendResponse from '../utils/sendResponse.js';
 
 /**
  * ********************************************************************************************************************
  *                                                  Helper Functions
  * ********************************************************************************************************************
  */
+
 const filterObj = (obj, ...allowedObj) => {
   const newObj = {};
   Object.keys(obj).forEach((el) => {
@@ -22,8 +24,6 @@ const filterObj = (obj, ...allowedObj) => {
  * ********************************************************************************************************************
  */
 const updateMe = catchAsync(async (req, res, next) => {
-  console.log(req.file);
-  console.log(req.body);
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
@@ -33,16 +33,12 @@ const updateMe = catchAsync(async (req, res, next) => {
     );
   }
   const filteredBody = filterObj(req.body, 'name', 'email');
+  if (req.file) filteredBody.photo = req.file.filename;
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
   });
-  res.status(200).json({
-    status: 'success',
-    data: {
-      user: updatedUser,
-    },
-  });
+  sendResponse(res, 200, updatedUser);
 });
 
 const getMe = (req, res, next) => {
@@ -53,10 +49,7 @@ const getMe = (req, res, next) => {
 
 const deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
+  sendResponse(res, 204, null);
 });
 
 /**
