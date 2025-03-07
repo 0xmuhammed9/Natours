@@ -3,7 +3,7 @@ import catchAsync from '../utils/catchAsync.js';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/appError.js';
 import { promisify } from 'util';
-import sendEmail from '../utils/email.js';
+import Email from '../utils/email.js';
 import crypto from 'node:crypto';
 
 /**
@@ -56,6 +56,8 @@ const signupUser = catchAsync(async (req, res) => {
     role: req.body.role,
     photo: req.body.photo,
   });
+  const url = `${req.protocol}://${req.get('host')}/me`;
+  await new Email(newUser, url).sendWelcome();
   createSendToken(newUser, 201, res);
 });
 
@@ -93,19 +95,7 @@ const forgetPassword = catchAsync(async (req, res, next) => {
     const resetURL = `${req.protocol}://${req.get(
       'host'
     )}/api/v1/users/reset-password/${resetToken}`;
-    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email.`;
-
-    const html = `
-      <p>Forgot your password?</p>
-      <p>Submit a PATCH request with your new password and passwordConfirm to: <a href="${resetURL}">${resetURL}</a></p>
-      <p>If you didn't forget your password, please ignore this email.</p>
-    `;
-    await sendEmail({
-      email: user.email,
-      subject: 'Your Password Reset Token (valid for 10 minutes)',
-      message,
-      html,
-    });
+    await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
       status: 'success',
@@ -149,8 +139,6 @@ const resetPassword = catchAsync(async (req, res, next) => {
 
 const updatePassword = catchAsync(async (req, res, next) => {
   //1) Get user from collection
-  console.log(req.user.id);
-  console.log(req.user._id);
   const user = await usersModel.findById(req.user.id).select('+password');
   const correctPass = await user.correctPassword(
     req.body.password,
@@ -213,10 +201,6 @@ const protect = catchAsync(async (req, res, next) => {
 
 const isRestricted = (roles) => {
   return (req, res, next) => {
-    // For debugging
-    console.log('User role:', req.user.role);
-    console.log('Allowed roles:', roles);
-
     if (!roles.includes(req.user.role)) {
       return next(
         new AppError('You do not have permission to perform this action', 403)
