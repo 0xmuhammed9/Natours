@@ -1,5 +1,4 @@
 import express from 'express';
-import multer from 'multer';
 import {
   signupUser,
   loginUser,
@@ -19,9 +18,9 @@ import {
   getUser,
   getMe,
 } from '../controllers/users-controller.js';
+import uploadUserImage from '../middleware/uploadImages.js';
 
 const usersRoute = express.Router();
-const upload = multer({ dest: 'public/img/users' });
 /**
  * ******************************************************************************************************
  *                                               User Routes
@@ -35,7 +34,7 @@ usersRoute.route('/forget-password').post(forgetPassword);
 usersRoute.route('/reset-password/:token').patch(resetPassword);
 usersRoute.use(protect); // Protect all routes after this middleware
 usersRoute.route('/update-password').patch(updatePassword);
-usersRoute.route('/updateMe').patch(upload.single('photo'), updateMe);
+usersRoute.route('/updateMe').patch(uploadUserImage, updateMe);
 usersRoute.route('/deleteMe').delete(deleteMe);
 usersRoute.route('/me').get(getMe, getUser);
 
