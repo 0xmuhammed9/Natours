@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import {
   signupUser,
   loginUser,
@@ -20,10 +21,10 @@ import {
 } from '../controllers/users-controller.js';
 
 const usersRoute = express.Router();
-
+const upload = multer({ dest: 'public/img/users' });
 /**
  * ******************************************************************************************************
- *                                               User Controller Functions
+ *                                               User Routes
  * ******************************************************************************************************
  */
 
@@ -34,13 +35,13 @@ usersRoute.route('/forget-password').post(forgetPassword);
 usersRoute.route('/reset-password/:token').patch(resetPassword);
 usersRoute.use(protect); // Protect all routes after this middleware
 usersRoute.route('/update-password').patch(updatePassword);
-usersRoute.route('/updateMe').patch(updateMe);
+usersRoute.route('/updateMe').patch(upload.single('photo'), updateMe);
 usersRoute.route('/deleteMe').delete(deleteMe);
 usersRoute.route('/me').get(getMe, getUser);
 
 /**
  * ******************************************************************************************************
- *                                               Admin Controller Functions
+ *                                               Admin Routes
  * ******************************************************************************************************
  */
 usersRoute.use(isRestricted(['admin'])); // Protect all routes after this middleware
