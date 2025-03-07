@@ -1,4 +1,12 @@
 import multer from 'multer';
+
+
+/**
+ * ****************************************************************************************
+ *                                         Configure Multer
+ * ****************************************************************************************
+ */
+
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/img/users');
@@ -8,6 +16,8 @@ const multerStorage = multer.diskStorage({
     cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
   },
 });
+
+
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
@@ -22,7 +32,13 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
+/**
+ * ****************************************************************************************
+ *                                         Middlewares
+ * ****************************************************************************************
+ */
 const uploadUserImage = upload.single('photo');
+
 
 
 export default uploadUserImage;
