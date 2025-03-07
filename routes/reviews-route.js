@@ -14,6 +14,12 @@ const reviewRoute = express.Router({
 });
 reviewRoute.use(protect);
 
+/**
+ * ****************************************************************************************
+ *                                  Routes
+ * ****************************************************************************************
+ */
+
 reviewRoute.route('/').get(getAllReviews).post(setTourUserIds, createReview);
 reviewRoute
   .route('/:id')
