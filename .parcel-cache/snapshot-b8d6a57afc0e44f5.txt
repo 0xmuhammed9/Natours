@@ -1,4 +1,4 @@
-10089
+10090
 64M:\Backend Developer\Projects\Natours-Website\node_modules\gauge133829782919979786 1
 78M:\Backend Developer\Projects\Natours-Website\node_modules\qs\lib\stringify.js133778111913723171 0
 96M:\Backend Developer\Projects\Natours-Website\node_modules\type-fest\source\set-return-type.d.ts133856568295250011 0
@@ -30,6 +30,8 @@
 70M:\Backend Developer\Projects\Natours-Website\node_modules\safe-buffer133778111913173136 1
 85M:\Backend Developer\Projects\Natours-Website\node_modules\array-flatten\package.json133778111912517886 0
 111M:\Backend Developer\Projects\Natours-Website\public\img\users\user-5c8a1f292f8fb814b56fa184-1557847910809.jpeg133825513975719243 0
+75M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\cmap133824670763294977 1
+72M:\Backend Developer\Projects\Natours-Website\public\js\updateSetting.js133857414142571712 0
 89M:\Backend Developer\Projects\Natours-Website\node_modules\xss-filters\tests\polyfills.js133846982073801783 0
 80M:\Backend Developer\Projects\Natours-Website\node_modules\lodash\_baseIsDate.js133846987926070217 0
 85M:\Backend Developer\Projects\Natours-Website\node_modules\axios\lib\adapters\http.js133854982510332755 0
@@ -119,7 +121,7 @@
 58M:\Backend Developer\Projects\Natours-Website\package.json133856601280120326 0
 87M:\Backend Developer\Projects\Natours-Website\node_modules\lodash.isplainobject\LICENSE133830529794573218 0
 106M:\Backend Developer\Projects\Natours-Website\node_modules\caniuse-lite\data\features\css-initial-value.js133856568318565166 0
-76M:\Backend Developer\Projects\Natours-Website\public\js\bundled\index.js.map133856709365168943 0
+76M:\Backend Developer\Projects\Natours-Website\public\js\bundled\index.js.map133857444685559833 0
 78M:\Backend Developer\Projects\Natours-Website\node_modules\wide-align\align.js133829782920448197 0
 100M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\operations\run_command.js.map133824670763064973 0
 52M:\Backend Developer\Projects\Natours-Website\public133855759705283730 1
@@ -180,7 +182,7 @@
 121M:\Backend Developer\Projects\Natours-Website\node_modules\@babel\types\lib\modifications\appendToMemberExpression.js.map133853778838210308 0
 66M:\Backend Developer\Projects\Natours-Website\utils\apiFeatures.js133826421071363282 0
 94M:\Backend Developer\Projects\Natours-Website\node_modules\math-intrinsics\.github\FUNDING.yml133853778832904097 0
-63M:\Backend Developer\Projects\Natours-Website\views\account.pug133856749940201173 0
+63M:\Backend Developer\Projects\Natours-Website\views\account.pug133857407020767875 0
 78M:\Backend Developer\Projects\Natours-Website\node_modules\make-dir\index.d.ts133829782921816128 0
 97M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\diagnostic\lib\diagnostic.d.ts133856568281828297 0
 77M:\Backend Developer\Projects\Natours-Website\node_modules\msgpackr\stream.js133856568292037721 0
@@ -265,11 +267,11 @@
 60M:\Backend Developer\Projects\Natours-Website\utils\email.js133840086672952390 0
 99M:\Backend Developer\Projects\Natours-Website\node_modules\caniuse-lite\data\features\use-strict.js133856568423269841 0
 111M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\src\client-side-encryption\auto_encrypter.ts133824670763824975 0
-71M:\Backend Developer\Projects\Natours-Website\node_modules\with\LICENSE133853778834144570 0
 120M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\package-manager\test\fixtures\packages\a\package.json133856568295930738 0
 87M:\Backend Developer\Projects\Natours-Website\node_modules\entities\lib\esm\escape.d.ts133856568306474005 0
 95M:\Backend Developer\Projects\Natours-Website\node_modules\caniuse-lite\data\features\srcset.js133856568422397017 0
 69M:\Backend Developer\Projects\Natours-Website\utils\errorFunctions.js133856722274069855 0
+71M:\Backend Developer\Projects\Natours-Website\node_modules\with\LICENSE133853778834144570 0
 76M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\types\lib133856568263414468 1
 76M:\Backend Developer\Projects\Natours-Website\node_modules\morgan\HISTORY.md133778112114189300 0
 73M:\Backend Developer\Projects\Natours-Website\public\img\users\user-4.jpg133825513975699136 0
@@ -290,7 +292,7 @@
 67M:\Backend Developer\Projects\Natours-Website\routes\tours-route.js133853893710043342 0
 70M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib133824670764004963 1
 67M:\Backend Developer\Projects\Natours-Website\routes\users-route.js133856698830314293 0
-66M:\Backend Developer\Projects\Natours-Website\routes\view-route.js133856750257229998 0
+66M:\Backend Developer\Projects\Natours-Website\routes\view-route.js133857416501823899 0
 85M:\Backend Developer\Projects\Natours-Website\node_modules\undici-types\handlers.d.ts133834873943832993 0
 110M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\src\client-side-encryption\providers\gcp.ts133824670765514971 0
 77M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\gridfs133824670763544970 1
@@ -304,11 +306,11 @@
 76M:\Backend Developer\Projects\Natours-Website\node_modules\ignore-by-default133778112280290877 1
 77M:\Backend Developer\Projects\Natours-Website\node_modules\lodash\fp\paths.js133846987935150230 0
 76M:\Backend Developer\Projects\Natours-Website\node_modules\lodash\inRange.js133846987931321952 0
-55M:\Backend Developer\Projects\Natours-Website\public\js133856608386092410 1
+55M:\Backend Developer\Projects\Natours-Website\public\js133857402423127503 1
 116M:\Backend Developer\Projects\Natours-Website\node_modules\posthtml\node_modules\dom-serializer\lib\esm\package.json133856568270988131 0
 73M:\Backend Developer\Projects\Natours-Website\node_modules\supports-color133778112280340873 1
 79M:\Backend Developer\Projects\Natours-Website\node_modules\lodash\fp\setWith.js133846987936310012 0
-63M:\Backend Developer\Projects\Natours-Website\public\js\bundled133856709365179016 1
+63M:\Backend Developer\Projects\Natours-Website\public\js\bundled133857444685580036 1
 65M:\Backend Developer\Projects\Natours-Website\public\js\alerts.js133856586909503798 0
 104M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\cmap\command_monitoring_events.js133824670758626113 0
 77M:\Backend Developer\Projects\Natours-Website\node_modules\lmdb\node-index.js133856568312039368 0
@@ -316,12 +318,12 @@
 82M:\Backend Developer\Projects\Natours-Website\node_modules\supports-color\index.js133778112280260847 0
 77M:\Backend Developer\Projects\Natours-Website\node_modules\lodash\iteratee.js133846987932250145 0
 79M:\Backend Developer\Projects\Natours-Website\node_modules\dotenv\lib\main.d.ts133778112208127407 0
-64M:\Backend Developer\Projects\Natours-Website\public\js\index.js133856708643263407 0
+64M:\Backend Developer\Projects\Natours-Website\public\js\index.js133857444678419821 0
 64M:\Backend Developer\Projects\Natours-Website\public\js\login.js133856708414874930 0
 85M:\Backend Developer\Projects\Natours-Website\node_modules\promise\lib\synchronous.js133853778842141797 0
 76M:\Backend Developer\Projects\Natours-Website\node_modules\undefsafe\LICENSE133778112280260847 0
 74M:\Backend Developer\Projects\Natours-Website\node_modules\promise\domains133853778841851785 1
-72M:\Backend Developer\Projects\Natours-Website\public\js\bundled\index.js133856709364918761 0
+72M:\Backend Developer\Projects\Natours-Website\public\js\bundled\index.js133857444685529819 0
 78M:\Backend Developer\Projects\Natours-Website\node_modules\pug-load\HISTORY.md133853778835770669 0
 90M:\Backend Developer\Projects\Natours-Website\node_modules\promise\setimmediate\finally.js133853778842381802 0
 82M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\optimizer-image133856568260670128 1
@@ -2469,12 +2471,12 @@
 86M:\Backend Developer\Projects\Natours-Website\node_modules\validator\es\lib\isEmpty.js133828137923726119 0
 84M:\Backend Developer\Projects\Natours-Website\node_modules\@babel\types\package.json133853778839140294 0
 137M:\Backend Developer\Projects\Natours-Website\node_modules\posthtml\node_modules\dom-serializer\node_modules\entities\lib\decode.d.ts.map133856568287996117 0
+114M:\Backend Developer\Projects\Natours-Website\node_modules\mongoose\lib\helpers\update\removeUnusedArrayFilters.js133824670764184984 0
+96M:\Backend Developer\Projects\Natours-Website\node_modules\validator\es\lib\isEthereumAddress.js133828137923736165 0
+81M:\Backend Developer\Projects\Natours-Website\node_modules\lodash\fp\entriesIn.js133846987930356811 0
 77M:\Backend Developer\Projects\Natours-Website\node_modules\lodash\fp\clamp.js133846987929527949 0
 81M:\Backend Developer\Projects\Natours-Website\node_modules\timsort\src\timsort.js133856568282028810 0
 82M:\Backend Developer\Projects\Natours-Website\node_modules\serve-static\HISTORY.md133778111913013111 0
-81M:\Backend Developer\Projects\Natours-Website\node_modules\lodash\fp\entriesIn.js133846987930356811 0
-114M:\Backend Developer\Projects\Natours-Website\node_modules\mongoose\lib\helpers\update\removeUnusedArrayFilters.js133824670764184984 0
-96M:\Backend Developer\Projects\Natours-Website\node_modules\validator\es\lib\isEthereumAddress.js133828137923736165 0
 90M:\Backend Developer\Projects\Natours-Website\node_modules\@babel\helper-string-parser\lib133853778834194588 1
 85M:\Backend Developer\Projects\Natours-Website\node_modules\validator\es\lib\isFQDN.js133828137923766178 0
 82M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\sessions.js133824670760155374 0
@@ -5293,7 +5295,6 @@
 82M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\beta.js.map133824670760984973 0
 78M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\bson.js133824670758306091 0
 75M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\bulk133824670763504960 1
-75M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\cmap133824670763294977 1
 91M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\connection_string.js133824670758916068 0
 87M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\constants.js.map133824670761934976 0
 77M:\Backend Developer\Projects\Natours-Website\node_modules\mongodb\lib\cursor133824670763034969 1
@@ -8896,7 +8897,6 @@
 87M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\workers\src\index.js133856568292553556 0
 92M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\workers\src\WorkerFarm.js133856568298095266 0
 94M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\workers\src\web\WebChild.js133856568296705118 0
-122M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\watcher\node_modules\node-addon-api\tools\conversion.js133856568290469172 0
 103M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\workers\src\process\ProcessWorker.js133856568295089717 0
 87M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\workers\lib\child.js133856568270832889 0
 92M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\workers\lib\childState.js133856568281888306 0
@@ -8939,6 +8939,7 @@
 112M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\watcher\node_modules\node-addon-api\README.md133856568292573588 0
 108M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\watcher\node_modules\node-addon-api\tools133856568292618724 1
 124M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\watcher\node_modules\node-addon-api\tools\clang-format.js133856568289966994 0
+122M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\watcher\node_modules\node-addon-api\tools\conversion.js133856568290469172 0
 118M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\watcher\node_modules\node-addon-api\tools\README.md133856568292678725 0
 107M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\watcher\node_modules\detect-libc\LICENSE133856568263981296 0
 118M:\Backend Developer\Projects\Natours-Website\node_modules\@parcel\watcher\node_modules\detect-libc\bin\detect-libc.js133856568266227305 0
@@ -10087,4 +10088,4 @@
 77M:\Backend Developer\Projects\Natours-Website\controllers\error-controller.js133856716386918483 0
 78M:\Backend Developer\Projects\Natours-Website\controllers\review-controller.js133851448981472919 0
 77M:\Backend Developer\Projects\Natours-Website\controllers\tours-controller.js133853893438435637 0
-76M:\Backend Developer\Projects\Natours-Website\controllers\view-controller.js133856750641378358 0
+76M:\Backend Developer\Projects\Natours-Website\controllers\view-controller.js133857416191495567 0
