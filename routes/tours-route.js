@@ -12,6 +12,14 @@ import reviewRoute from './reviews-route.js';
 
 const toursRoute = express.Router();
 
+
+
+/**
+ * ****************************************************************************************
+ *                                  Routes
+ * ****************************************************************************************
+ */
+
 toursRoute.use('/:tourId/reviews', reviewRoute);
 toursRoute.route('/distances/:latlng/unit/:unit').get(getDistances);
 toursRoute.route('/').get(protect, getAllTour).post(addTour);
