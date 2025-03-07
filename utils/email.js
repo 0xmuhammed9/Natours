@@ -1,9 +1,29 @@
 import nodemailer from 'nodemailer';
+import pug from 'pug';
+import {htmlToText} from 'html-to-text';
+import path from 'path';
 
-const sendEmail = async (options) => {
-  try {
-    //1) Create Transport
-    const transport = nodemailer.createTransport({
+class Email {
+  constructor(user, url) {
+    this.to = user.email;
+    this.firstName = user.name.split(' ')[0];
+    this.url = url;
+    this.from = `Jonas Schmedtmann <${process.env.EMAIL_FROM}>`;
+  }
+
+  newTransport() {
+    if (process.env.NODE_ENV === 'production') {
+      // Sendgrid
+      return nodemailer.createTransport({
+        service: 'SendGrid',
+        auth: {
+          user: process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD,
+        },
+      });
+    }
+
+    return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
       auth: {
@@ -11,29 +31,39 @@ const sendEmail = async (options) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
+  }
 
-    //2) Verify transport connection
-    await transport.verify();
+  async send(template, subject) {
+    const html = pug.renderFile(
+      path.join(process.cwd(), `views/email/${template}.pug`),
+      {
+        firstName: this.firstName,
+        url: this.url,
+        subject,
+      }
+    );
 
-    //2) Define the email options
     const mailOptions = {
-      from: 'Natours Admin <admin@natours.io>',
-      to: options.email,
-      subject: options.subject,
-      text: options.message,
-      // Add HTML support
-      html: options.html || options.message.replace(/\n/g, '<br>'),
+      from: this.from,
+      to: this.to,
+      subject,
+      html,
+      text: htmlToText(html)
     };
 
-    //3) Send the email
-    const info = await transport.sendMail(mailOptions);
-    console.log('Email sent: %s', info.messageId);
-
-    return info;
-  } catch (error) {
-    console.error('Email sending failed:', error);
-    throw new Error('Email could not be sent. Please try again later.');
+    await this.newTransport().sendMail(mailOptions);
   }
-};
 
-export default sendEmail;
+  async sendWelcome() {
+    await this.send('welcome', 'Welcome to the Natours Family!');
+  }
+
+  async sendPasswordReset() {
+    await this.send(
+      'passwordReset',
+      'Your password reset token (valid for only 10 minutes)'
+    );
+  }
+}
+
+export default Email;
