@@ -74,7 +74,7 @@ const loginUser = catchAsync(async (req, res, next) => {
   }
   createSendToken(user, 200, res);
 });
-const logoutUser = catchAsync((req, res) => {
+const logoutUser = catchAsync(async (req, res, next) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
