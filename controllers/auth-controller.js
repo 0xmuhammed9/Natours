@@ -74,6 +74,13 @@ const loginUser = catchAsync(async (req, res, next) => {
   }
   createSendToken(user, 200, res);
 });
+const logout =catchAsync( (req, res) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+  res.status(200).json({ status: 'success' });
+});
 
 const forgetPassword = catchAsync(async (req, res, next) => {
   const user = await usersModel.findOne({ email: req.body.email });
@@ -260,5 +267,5 @@ export {
   resetPassword,
   updatePassword,
   isLoggedIn,
-  logoutUser,
+  logout,
 };
