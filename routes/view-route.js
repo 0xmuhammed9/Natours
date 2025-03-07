@@ -13,7 +13,6 @@ const viewRouter = express.Router();
 
 viewRouter.use(isLoggedIn);
 
-
 /**
  * ****************************************************************************************
  *                                  Routes
