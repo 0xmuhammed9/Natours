@@ -2,7 +2,7 @@ import express from 'express';
 import {
   signupUser,
   loginUser,
-  logoutUser,
+  logout,
   forgetPassword,
   resetPassword,
   updatePassword,
@@ -29,7 +29,7 @@ const usersRoute = express.Router();
 
 usersRoute.route('/signup').post(signupUser);
 usersRoute.route('/login').post(loginUser);
-usersRoute.route('/logout').get(logoutUser);
+usersRoute.route('/logout').get(logout);
 usersRoute.route('/forget-password').post(forgetPassword);
 usersRoute.route('/reset-password/:token').patch(resetPassword);
 usersRoute.use(protect); // Protect all routes after this middleware
