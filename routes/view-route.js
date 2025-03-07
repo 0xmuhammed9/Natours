@@ -13,6 +13,13 @@ const viewRouter = express.Router();
 
 viewRouter.use(isLoggedIn);
 
+
+/**
+ * ****************************************************************************************
+ *                                  Routes
+ * ****************************************************************************************
+ */
+
 viewRouter.get('/', getView);
 viewRouter.get('/tour/:slug', getTour);
 viewRouter.get('/login', login);
