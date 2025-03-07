@@ -74,10 +74,10 @@ const loginUser = catchAsync(async (req, res, next) => {
   }
   createSendToken(user, 200, res);
 });
-const logout =catchAsync( (req, res) => {
+const logoutUser = catchAsync((req, res) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true
+    httpOnly: true,
   });
   res.status(200).json({ status: 'success' });
 });
@@ -261,11 +261,11 @@ const isLoggedIn = async (req, res, next) => {
 export {
   signupUser,
   loginUser,
+  logoutUser,
   protect,
   isRestricted,
   forgetPassword,
   resetPassword,
   updatePassword,
   isLoggedIn,
-  logout,
 };
