@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Tour from './tours-model.js';
 
 const bookingShcema = new mongoose.Schema({
   tour: {
@@ -33,6 +32,6 @@ bookingShcema.pre(/^find/, function (next) {
   });
 });
 
-const Booking = new mongoose.Model('Booking', bookingShcema);
+const Booking = new mongoose.model('Booking', bookingShcema);
 
 export default Booking;
