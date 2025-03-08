@@ -7,6 +7,7 @@ import {
   signup,
   getAccout,
   updateUserData,
+  getMyTour,
 } from '../controllers/view-controller.js';
 import { createBookingCheckout } from '../controllers/booking-controller.js';
 
@@ -26,6 +27,7 @@ viewRouter.get('/tour/:slug', getTour);
 viewRouter.get('/login', login);
 viewRouter.get('/signup', signup);
 viewRouter.get('/me', getAccout);
+viewRouter.get('/my-tours', getMyTour);
 viewRouter.post('/update-data', updateUserData);
 
 export default viewRouter;
