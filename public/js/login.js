@@ -12,7 +12,6 @@ export const login = async (email, password) => {
         password,
       },
       withCredentials: true,
-      credentials: 'include', // Add this to ensure cookies are sent
       headers: {
         'Content-Type': 'application/json',
       },
@@ -29,6 +28,34 @@ export const login = async (email, password) => {
       'error',
       err.response?.data?.message || 'Error logging in. Please try again.'
     );
+  }
+};
+
+export const signup = async (name, email, password, passwordConfirm) => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: '/api/v1/users/signup',
+      data: {
+        name,
+        email,
+        password,
+        passwordConfirm,
+      },
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Signed up successfully!');
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
   }
 };
 
