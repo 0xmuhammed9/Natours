@@ -1,5 +1,6 @@
-import Tour from '../models/tours-model.js';
+import Booking from '../models/booking-models.js';
 import catchAsync from '../utils/catchAsync.js';
+import Tour from '../models/tours-model.js';
 import Stripe from 'stripe';
 import sendResponse from '../utils/sendResponse.js';
 
@@ -35,11 +36,6 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
           product_data: {
             name: `${tour.name} Tour`,
             description: tour.summary,
-            images: [
-              `${req.protocol}://${req.get('host')}/img/tours/${
-                tour.imageCover
-              }`,
-            ],
           },
         },
         quantity: 1,
@@ -51,4 +47,13 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
   sendResponse(res, 200, session);
 });
 
-export default getCheckoutSession;
+const createBookingCheckout = catchAsync(async (req, res, next) => {
+  const { tour, user, price } = req.query;
+
+  if (!tour && !user && !price) return next();
+  await Booking.create({ tour, user, price });
+
+  res.redirect(req.originalUrl.split('?')[0]);
+});
+
+export { createBookingCheckout, getCheckoutSession };
