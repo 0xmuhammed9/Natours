@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import toursRoute from './routes/tours-route.js';
 import usersRoute from './routes/users-route.js';
 import reviewsRoute from './routes/reviews-route.js';
+import bookingRoute from './routes/booking-route.js';
 import AppError from './utils/appError.js';
 import errorHandler from './controllers/error-controller.js';
 import { rateLimit } from 'express-rate-limit';
@@ -80,6 +81,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', toursRoute);
 app.use('/api/v1/users', usersRoute);
 app.use('/api/v1/reviews', reviewsRoute);
+app.use('/api/v1/booking', bookingRoute);
 
 /**
  * ***************************************************************************************************
