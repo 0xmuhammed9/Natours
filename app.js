@@ -14,7 +14,6 @@ import DataSansitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 import path from 'node:path';
-import { cwd } from 'node:process';
 import viewRouter from './routes/view-route.js';
 import cors from 'cors';
 
