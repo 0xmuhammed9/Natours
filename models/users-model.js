@@ -42,6 +42,7 @@ const usersSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   photo: {
     type: String,
+    default: 'default.jpg'
   },
   role: {
     type: String,
